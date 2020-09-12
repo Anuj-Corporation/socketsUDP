@@ -6,6 +6,7 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    this->setWindowTitle("CHAT 2");
 
     udpsocket = new QUdpSocket(this);
     udpsocket->bind(LOCAL_ADDR,LOCAL_PORT);
@@ -34,7 +35,23 @@ void MainWindow::readInformationReceived()
         udpsocket->readDatagram(datagram.data(), datagram.size(),
                                 &PairAddr, &PairPort);
 
-        ui->plainTextEdit->appendPlainText(QString(datagram + " [" + PairAddr.toString() + ", %1]").arg(PairPort));
+        //ui->plainTextEdit->appendPlainText(QString(datagram + " [" + PairAddr.toString() + ", %1]").arg(PairPort));
+
+        //! [Step 1] Splitting the string
+        QStringList operands = QString(datagram).split(',', QString::SkipEmptyParts);
+
+        //! [Step 2] Conversion to integer values
+        bool ok;
+        int op1 = operands.at(0).toInt(&ok, 10);
+        if(ok == false) ui->plainTextEdit->setPlainText("Error in operand 1");
+
+        int op2 = operands.at(1).toInt(&ok, 10);
+        if(ok == false) ui->plainTextEdit->setPlainText("Error in operand 1");
+
+        //! [Step 3] Operation
+        int result = op1 * op2;
+
+        ui->plainTextEdit->setPlainText(QString("Multiple of A x B = %1").arg(result));
     }
 
 }

@@ -6,6 +6,7 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    this->setWindowTitle("CHAT 1");
 
     udpsocket = new QUdpSocket(this);
     udpsocket->bind(LOCAL_ADDR,LOCAL_PORT);
@@ -51,6 +52,9 @@ void MainWindow::on_bConnect_clicked()
 
     ui->lineEdit->clear();
     ui->plainTextEdit->clear();
+
+    ui->plainTextEdit->setPlainText("Enter the input values for A and B\n");
+    ui->plainTextEdit->appendPlainText("For example: 10,20");
 }
 
 void MainWindow::on_bSend_clicked()
